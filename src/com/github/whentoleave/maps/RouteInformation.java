@@ -90,7 +90,9 @@ public class RouteInformation
 	public static int getDuration(final Location location,
 			final String destination, final String travelType)
 	{
-		InputStream is = null;
+		return 0;
+		
+		/*InputStream is = null;
 		int durationSec = 0;
 		try
 		{
@@ -154,7 +156,7 @@ public class RouteInformation
 					Log.w(TAG, "Error closing InputStream", e);
 				}
 		}
-		return durationSec / 60;
+		return durationSec / 60;*/
 	}
 
 	/**

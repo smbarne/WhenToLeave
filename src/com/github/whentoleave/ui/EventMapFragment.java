@@ -162,6 +162,7 @@ public class EventMapFragment extends Fragment implements
 		final Resources resources = getResources();
 		// GPS and Colored Square Resources
 		gpsLocationIcon = resources.getDrawable(R.drawable.ic_gps_location);
+		
 		// Green Numbered Square Resources
 		greenSquareDefault = resources.getDrawable(R.drawable.ic_green_square);
 		greenSquaresNumbered = new Drawable[10];
@@ -185,6 +186,7 @@ public class EventMapFragment extends Fragment implements
 				.getDrawable(R.drawable.ic_green_square_9);
 		greenSquaresNumbered[9] = resources
 				.getDrawable(R.drawable.ic_green_square_10);
+		
 		// Orange Numbered Square Resources
 		orangeSquareDefault = resources
 				.getDrawable(R.drawable.ic_orange_square);
@@ -209,6 +211,7 @@ public class EventMapFragment extends Fragment implements
 				.getDrawable(R.drawable.ic_orange_square_9);
 		orangeSquaresNumbered[9] = resources
 				.getDrawable(R.drawable.ic_orange_square_10);
+		
 		// Red Numbered Square Resources
 		redSquareDefault = resources.getDrawable(R.drawable.ic_red_square);
 		redSquaresNumbered = new Drawable[10];
@@ -255,6 +258,7 @@ public class EventMapFragment extends Fragment implements
 				.getDrawable(R.drawable.ic_grey_square_9);
 		greySquaresNumbered[9] = resources
 				.getDrawable(R.drawable.ic_grey_square_10);
+		
 		// Set bounds for the icons since mapview doesn't like to place them
 		// without explicit bounds
 		gpsLocationIcon.setBounds(0, 0, 36, 36);
@@ -310,8 +314,12 @@ public class EventMapFragment extends Fragment implements
 		super.onActivityCreated(savedInstanceState);
 		
 		// Get MapView reference from Main Activity.  Do not create within fragment
-		mapView = ((MainActivity) getActivity()).getMapView();
+		if (mapView == null)
+			mapView = ((MainActivity) getActivity()).getMapView();
+
+		// Populate the view from the singleton mapView
 		((ViewGroup) getView().findViewById(R.id.mapview_holder)).addView(mapView);
+
 		
 		// Initialize overlay variables
 		final List<Overlay> mapOverlays = mapView.getOverlays();
@@ -355,10 +363,11 @@ public class EventMapFragment extends Fragment implements
 		final Calendar calendarLaterToday = Calendar.getInstance();
 		calendarLaterToday.add(Calendar.HOUR_OF_DAY, 24 - calendarLaterToday.get((Calendar.HOUR_OF_DAY)));
 		final String selection = CalendarContract.Events.DTSTART + ">=? AND "
-				+ CalendarContract.Events.DTEND + "<?";
+				+ CalendarContract.Events.DTEND + "<? AND " +
+				CalendarContract.Events.ALL_DAY + " IS 0";
 		final String selectionArgs[] = {
 				Long.toString(calendarToday.getTimeInMillis()),
-				Long.toString(calendarLaterToday.getTimeInMillis()) };
+				Long.toString(calendarLaterToday.getTimeInMillis())};
 		final String[] projection = { BaseColumns._ID,
 				CalendarContract.Events.TITLE, CalendarContract.Events.DTSTART,
 				CalendarContract.Events.EVENT_LOCATION };
@@ -371,17 +380,13 @@ public class EventMapFragment extends Fragment implements
 	public View onCreateView(final LayoutInflater inflater,
 			final ViewGroup container, final Bundle savedInstanceState)
 	{
-		// For rotation of the mapview, see:
-		//http://stackoverflow.com/questions/7818448/android-mapview-with-fragments-cant-be-added-twice
-		//if(mapView.getParent() != null)
-		//mapContainer.removeView(mapView);
-		
+		// For rotation of the MapView, see:
+		// http://stackoverflow.com/questions/7818448/android-mapview-with-fragments-cant-be-added-twice
 		if (mapView == null)
 			mapView = ((MainActivity) getActivity()).getMapView();
 		
 		if (mapContainer != null && mapView != null)
 			mapContainer.removeView(mapView);
-		
 		
 		View root =inflater.inflate(R.layout.map, container, false); 
         mapContainer = (ViewGroup) root.findViewById(R.id.mapview_holder);

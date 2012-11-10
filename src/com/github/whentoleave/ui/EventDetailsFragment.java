@@ -94,13 +94,21 @@ public class EventDetailsFragment extends Activity implements
 				.getColumnIndex(CalendarContract.Events.TITLE);
 		final String title = data.getString(titleColumnIndex);
 		final TextView eventDetailsName = (TextView) findViewById(R.id.eventDetailsName);
-		eventDetailsName.setText(title);
+		if (title != null)
+			eventDetailsName.setText(title);
+		else
+			eventDetailsName.setText("Unknown Event");		
+		
 		// Set the event description
 		final int descriptionColumnIndex = data
 				.getColumnIndex(CalendarContract.Events.DESCRIPTION);
 		final String description = data.getString(descriptionColumnIndex);
 		final TextView eventDetailsDescription = (TextView) findViewById(R.id.eventDetailsDescription);
-		eventDetailsDescription.setText(description);
+		if (description != null)
+			eventDetailsDescription.setText(description);
+		else
+			eventDetailsDescription.setText("");
+		
 		// Set the event start time
 		final int startTimeColumnIndex = data
 				.getColumnIndex(CalendarContract.Events.DTSTART);
@@ -108,16 +116,21 @@ public class EventDetailsFragment extends Activity implements
 		final TextView eventDetailsWhen = (TextView) findViewById(R.id.eventDetailsWhen);
 		eventDetailsWhen.setText(DateFormat.format("hh:mma 'on' EEEE, MMM dd",
 				new Date(startTime)));
+		
 		// Set the event location
 		final int locationColumnIndex = data
 				.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 		final String location = data.getString(locationColumnIndex);
 		final TextView eventDetailsLocation = (TextView) findViewById(R.id.eventDetailsLocation);
-		eventDetailsLocation.setText(location);
+		if (location != null)
+			eventDetailsLocation.setText(location);
+		else
+			eventDetailsLocation.setText("Unknown Location");		
+		
 		// Set up the navigate and map buttons
 		final Button eventDetailsMapButton = (Button) findViewById(R.id.eventDetailsMapButton);
 		final Button eventDetailsNavButton = (Button) findViewById(R.id.eventDetailsNavButton);
-		if (location.equals(""))
+		if (location == null || location.equals(""))
 		{
 			eventDetailsMapButton.setVisibility(View.GONE);
 			eventDetailsMapButton.setClickable(false);

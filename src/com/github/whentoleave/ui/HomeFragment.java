@@ -67,7 +67,8 @@ public class HomeFragment extends Fragment implements LoaderCallbacks<Cursor>
 		twoWeeksFromNow.add(Calendar.DATE, 14);
 		final String selection = CalendarContract.Events.DTSTART + ">=? AND "
 				+ CalendarContract.Events.DTEND + "<? AND "
-				+ CalendarContract.Events.EVENT_LOCATION + " IS NOT NULL";
+				+ CalendarContract.Events.EVENT_LOCATION + " IS NOT NULL AND "
+				+ CalendarContract.Events.ALL_DAY + " IS 0";
 		final String selectionArgs[] = {
 				Long.toString(Calendar.getInstance().getTimeInMillis()),
 				Long.toString(twoWeeksFromNow.getTimeInMillis()) };

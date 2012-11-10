@@ -70,7 +70,11 @@ public class AgendaFragment extends ListFragment implements
 			final String title = cursor.getString(titleColumnIndex);
 			final TextView titleView = (TextView) view
 					.findViewById(R.id.agendaItemTitle);
-			titleView.setText(title);
+			if (title != null)
+				titleView.setText(title);
+			else
+				titleView.setText("None");
+			
 			// Set the event start time
 			final int startTimeColumnIndex = cursor
 					.getColumnIndex(CalendarContract.Events.DTSTART);
@@ -79,13 +83,15 @@ public class AgendaFragment extends ListFragment implements
 					.findViewById(R.id.agendaItemWhen);
 			startTimeView.setText(DateFormat.format("hh:mma 'on' EEEE, MMM dd",
 					new Date(startTime)));
+			
+			
 			// Set the event location
 			final int locationColumnIndex = cursor
 					.getColumnIndex(CalendarContract.Events.EVENT_LOCATION);
 			final String location = cursor.getString(locationColumnIndex);
 			final TextView locationView = (TextView) view
 					.findViewById(R.id.agendaItemWhere);
-			if (location.equals(""))
+			if (location==null || location.equals(""))
 				locationView.setText(getText(R.string.event_no_location));
 			else
 				locationView.setText(location);
@@ -113,6 +119,7 @@ public class AgendaFragment extends ListFragment implements
 		super.onActivityCreated(savedInstanceState);
 		// TODO -SB
 		//setEmptyText(getText(R.string.agenda_loading));
+		
 		adapter = new AgendaCursorAdapter(getActivity(), null, 0);
 		setListAdapter(adapter);
 		getListView().setChoiceMode(AbsListView.CHOICE_MODE_NONE);
@@ -125,10 +132,11 @@ public class AgendaFragment extends ListFragment implements
 		final Calendar twoWeeksFromNow = Calendar.getInstance();
 		twoWeeksFromNow.add(Calendar.DATE, 14);
 		final String selection = CalendarContract.Events.DTSTART + ">=? AND "
-				+ CalendarContract.Events.DTEND + "<?";
+				+ CalendarContract.Events.DTEND + "<? AND " + 
+				CalendarContract.Events.ALL_DAY + " IS 0";
 		final String selectionArgs[] = {
 				Long.toString(Calendar.getInstance().getTimeInMillis()),
-				Long.toString(twoWeeksFromNow.getTimeInMillis()) };
+				Long.toString(twoWeeksFromNow.getTimeInMillis())};
 		final String[] projection = { BaseColumns._ID,
 				CalendarContract.Events.TITLE, CalendarContract.Events.DTSTART,
 				CalendarContract.Events.EVENT_LOCATION };
