@@ -31,7 +31,7 @@
 		<activity
 			android:name=".ui.EventDetailsFragment"
 			android:label="@string/eventDetailsTitle"
-			android:theme="@android:style/Theme.Dialog" />
+			android:theme="@android:style/Theme.Holo.Light.Dialog" />
 		<activity
 			android:name=".ui.Preferences"
 			android:label="@string/preferencesTitle" />
