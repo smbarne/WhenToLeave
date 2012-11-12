@@ -24,5 +24,6 @@
 	<string name="map">Map</string>
 	<string name="navigate">Navigate</string>
 	<string name="info">More Info</string>
+	<string name="selectedCalendarURIS">0</string>
 
 </resources>

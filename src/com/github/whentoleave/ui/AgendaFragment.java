@@ -1,7 +1,10 @@
 package com.github.whentoleave.ui;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import android.app.ListFragment;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -9,6 +12,7 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.BaseColumns;
@@ -129,20 +133,43 @@ public class AgendaFragment extends ListFragment implements
 	@Override
 	public Loader<Cursor> onCreateLoader(final int arg0, final Bundle arg1)
 	{
+		// TODO: what if we want to default to just all calendars??
+		
 		final Calendar twoWeeksFromNow = Calendar.getInstance();
 		twoWeeksFromNow.add(Calendar.DATE, 14);
-		final String selection = CalendarContract.Events.DTSTART + ">=? AND "
-				+ CalendarContract.Events.DTEND + "<? AND " + 
+		
+		SharedPreferences settings = getActivity().getSharedPreferences("MyPrefs", 0);
+		String selectedURIs = settings.getString("selectedCalendarURIS", "-1");
+		StringTokenizer st = new StringTokenizer(selectedURIs, ",");
+		ArrayList<String> calendarURIs = new ArrayList<String>();
+		
+        while (st.hasMoreTokens()) {
+        	calendarURIs.add(st.nextToken());
+        }
+		
+		String calIDSelect = "( " + CalendarContract.Events.CALENDAR_ID + " =? ";
+		for (int i=1; i<calendarURIs.size(); i++)
+			calIDSelect += " OR " + CalendarContract.Events.CALENDAR_ID + " =? ";
+		calIDSelect += " ) AND ";
+		
+		// TODO: limit the search distance again.  Perhaps use a preference as well.
+
+		final String selection = calIDSelect +  
+				CalendarContract.Events.DTSTART + ">=? AND " +
+				//CalendarContract.Events.DTEND + "<? AND " + 
 				CalendarContract.Events.ALL_DAY + " IS 0";
-		final String selectionArgs[] = {
-				Long.toString(Calendar.getInstance().getTimeInMillis()),
-				Long.toString(twoWeeksFromNow.getTimeInMillis())};
+		
+		List<String> selectionArguments = new ArrayList<String>(calendarURIs);
+		selectionArguments.add(Long.toString(Calendar.getInstance().getTimeInMillis()));
+		//selectionArguments.add(Long.toString(twoWeeksFromNow.getTimeInMillis()));
+		
 		final String[] projection = { BaseColumns._ID,
 				CalendarContract.Events.TITLE, CalendarContract.Events.DTSTART,
 				CalendarContract.Events.EVENT_LOCATION };
+		
 		return new CursorLoader(getActivity(),
-				CalendarContract.Events.CONTENT_URI, projection, selection,
-				selectionArgs, CalendarContract.Events.DTSTART);
+		CalendarContract.Events.CONTENT_URI, projection, selection,
+		selectionArguments.toArray(new String[0]), CalendarContract.Events.DTSTART);
 	}
 
 	@Override
