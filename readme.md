@@ -2,7 +2,7 @@
 
 WhenToLeave is an Android app that ties into a user's calendar and provides alerts and notifications on when to leave based upon the user's location, transit options, and traffic.
 
-![Primary Screen](gmbarne.github.com/whentoleave/screenshots/Screenshot1.jpg)
+![Primary Screen](/whentoleave/screenshots/Screenshot1.jpg)
 
 
 ## Repo
@@ -25,6 +25,6 @@ Note that many of the features of the application require a GPS signal. To send 
 
 ### Aditional Screenshots
 
-![Agenda View](gmbarne.github.com/whentoleave/screenshots/Screenshot2.jpg)
-![Map View](gmbarne.github.com/whentoleave/screenshots/Screenshot3.jpg)
-![Event Details](gmbarne.github.com/whentoleave/screenshots/Screenshot4.jpg)
+![Agenda View](/whentoleave/screenshots/Screenshot2.jpg)
+![Map View](/whentoleave/screenshots/Screenshot3.jpg)
+![Event Details](/whentoleave/screenshots/Screenshot4.jpg)
