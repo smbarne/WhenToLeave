@@ -37,11 +37,13 @@ public class Preferences extends Activity
 			final SharedPreferences.Editor editor = settings.edit();
 			final Resources r = getResources();
 			final int[] iValues = r.getIntArray(R.array.notify_time_values);
+			
 			int notifyTime = 3600;
 			if (pos > 0 && pos <= iValues.length)
 				notifyTime = iValues[pos];
 			editor.putInt("NotifyTime", notifyTime);
 			editor.commit();
+			
 			Log.v(Preferences.TAG, "Clicked on: " + notifyTime);
 			Log.v(Preferences.TAG,
 					"Committed: " + settings.getInt("NotifyTime", 0));
@@ -150,6 +152,7 @@ public class Preferences extends Activity
 										"EventDetails"));
 			}
 		});
+		
 		final RadioButton rbActionButtonPrefMap = (RadioButton) findViewById(R.id.rbActionButtonPrefMap);
 		rbActionButtonPrefMap.setOnClickListener(new OnClickListener()
 		{
@@ -167,6 +170,7 @@ public class Preferences extends Activity
 										"Map"));
 			}
 		});
+		
 		final RadioButton rbActionButtonPrefNav = (RadioButton) findViewById(R.id.rbActionButtonPrefNav);
 		rbActionButtonPrefNav.setOnClickListener(new OnClickListener()
 		{
@@ -184,6 +188,7 @@ public class Preferences extends Activity
 										"Navigate"));
 			}
 		});
+		
 		// Setup radio button initial configuration
 		if (actionBarPref.equals("EventDetails"))
 			rbActionButtonPrefDetails.setChecked(true);
@@ -193,6 +198,7 @@ public class Preferences extends Activity
 			rbActionButtonPrefNav.setChecked(true);
 		else
 			rbActionButtonPrefDetails.setChecked(true);
+		
 		// Setup Notifications Enabled checkbox
 		final CheckBox cbEnableNotifications = (CheckBox) findViewById(R.id.cbEnableNotifications);
 		cbEnableNotifications.setChecked(enableNotifications);

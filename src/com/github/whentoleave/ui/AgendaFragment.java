@@ -172,7 +172,9 @@ public class AgendaFragment extends ListFragment implements
 	public void onLoadFinished(final Loader<Cursor> loader, final Cursor data)
 	{
 		adapter.swapCursor(data);
-		if (data.getCount() == 0)
-			setEmptyText(getText(R.string.agenda_empty));
+
+		// TODO
+		//if (data.getCount() == 0)
+		//	setEmptyText(getText(R.string.agenda_empty)); // Can't be used with a custom item!
 	}
 }

@@ -144,6 +144,7 @@ public class EventDetailsFragment extends Activity implements
 				@Override
 				public void onClick(final View v)
 				{
+					// TODO: RouteInformation is null
 					final GeoPoint geoPoint = RouteInformation
 							.getLocation(location);
 					final String latLng = geoPoint.getLatitudeE6() / 1E6 + ","

@@ -398,9 +398,12 @@ public class EventMapFragment extends Fragment implements
 	public void onDestroy()
 	{	
 		super.onDestroy();
+		
 		service.unregister();
-		getActivity().unbindService(service);
-		mapContainer.removeView(mapView);
+		//getActivity().unbindService(service);
+		
+		if (mapContainer != null && mapView != null)	
+			mapContainer.removeView(mapView);
 	}
 	
 	@Override
